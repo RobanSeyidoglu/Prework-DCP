@@ -59,6 +59,9 @@ function editGroceries(index) {
     groceries[index].name = newName;
     saveAndDisplay(); // Save changes
   }
+  else if(newName.trim() === '') {
+    alert('Please enter a valid input');
+  }
 }
 
 // Delete All Items
