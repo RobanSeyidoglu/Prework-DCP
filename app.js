@@ -1,4 +1,4 @@
-let groceries = []; 
+let groceries = JSON.parse(localStorage.getItem('groceries')) || [];
 
 let groceryList = document.getElementById('grocery-items');
 let submitBtn = document.querySelector('#submit');
@@ -11,46 +11,54 @@ submitBtn.addEventListener('click', (e) => {
   } else {
     groceries.push({
       name: input.value,
-      
     });
 
+    saveAndDisplay(); // Save & update UI
     input.value = ''; 
-
-    displayGroceries(); 
-
-    
   }
 });
 
 function displayGroceries() {
-  let index = 0;
   groceryList.innerHTML = groceries.map((grocery, index) => `
     <div class="item">
       <div class="item-name">
         <h3>${grocery.name}</h3>
       </div>
       <div class="item-symbols">
-        <button id='edit' onclick='editGroceries(${index})'  class="edit-btn"><i class="fas fa-edit edit"></i></button>
-        <button id='delete' onclick='deleteGroceries(${index})' class="delete-btn"><i class="fas fa-trash delete"></i></button>
+        <button onclick='editGroceries(${index})' class="edit-btn">
+          <i class="fas fa-edit edit"></i>
+        </button>
+        <button onclick='deleteGroceries(${index})' class="delete-btn">
+          <i class="fas fa-trash delete"></i>
+        </button>
       </div>
     </div>
   `).join(''); 
-  index++;
-  
 }
 
+// Save groceries to localStorage & update UI
+function saveAndDisplay() {
+  localStorage.setItem('groceries', JSON.stringify(groceries));
+  displayGroceries();
+}
+
+// Delete item & save changes
 function deleteGroceries(index) {
-  let isConfirmed = confirm('Are you sure you want to delete'+': '+ groceries[index].name + '?');
+  let isConfirmed = confirm('Are you sure you want to delete: ' + groceries[index].name + '?');
   if (isConfirmed) {
     groceries.splice(index, 1);
-    displayGroceries();
-    
+    saveAndDisplay(); // Save changes
   }
 }
-function editGroceries(index) {
-  let itemName= groceries[index];
-let newName = prompt('Enter new name', itemName.name);
- itemName.name = newName;
-displayGroceries();
 
+// Edit item & save changes
+function editGroceries(index) {
+  let newName = prompt('Enter new name', groceries[index].name);
+  if (newName !== null && newName.trim() !== '') {
+    groceries[index].name = newName;
+    saveAndDisplay(); // Save changes
+  }
 }
+
+// Load items on page load
+displayGroceries();
