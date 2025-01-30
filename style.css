@@ -100,3 +100,12 @@ white-space: nowrap;
     color: rgb(41, 52, 155);
     font-size: 1.2rem;
 }
+@media screen and (max-width: 500px) {
+    .container {
+        width: 100%;
+    }
+    #grocery-items .item .item-name h3 {
+        width: 100px;
+    }
+    
+}
