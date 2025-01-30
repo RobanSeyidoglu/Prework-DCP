@@ -2,6 +2,7 @@ let groceries = JSON.parse(localStorage.getItem('groceries')) || [];
 
 let groceryList = document.getElementById('grocery-items');
 let submitBtn = document.querySelector('#submit');
+let clearBtn = document.querySelector('.clear-items');
 
 submitBtn.addEventListener('click', (e) => { 
   let input = document.getElementById('input');
@@ -60,5 +61,13 @@ function editGroceries(index) {
   }
 }
 
+// Delete All Items
+clearBtn.addEventListener('click', () => {
+  let isConfirmed = confirm('Are you sure you want to clear all items?');
+  if (isConfirmed) {
+    groceries = [];
+    saveAndDisplay(); 
+}}
+)
 // Load items on page load
 displayGroceries();
